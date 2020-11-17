@@ -1,4 +1,4 @@
-package com.staduy.basic;
+package com.study.basic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

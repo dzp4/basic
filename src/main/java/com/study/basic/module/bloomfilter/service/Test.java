@@ -1,6 +1,7 @@
-package com.staduy.basic.bloomfilter;
+package com.study.basic.module.bloomfilter.service;
 
 import cn.hutool.bloomfilter.BitMapBloomFilter;
+import cn.hutool.core.lang.Assert;
 
 /**
  * @author dzp 2020/11/10
@@ -23,6 +24,10 @@ public class Test {
         boolean exist2 = filter.contains("abc1");
         System.out.println(exist1);
         System.out.println(exist2);
+
+
+
+
     }
 
 }

@@ -1,4 +1,4 @@
-package com.staduy.basic.sort;
+package com.study.basic.sort;
 
 import cn.hutool.core.util.RandomUtil;
 

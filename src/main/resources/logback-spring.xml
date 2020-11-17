@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <contextName>basic</contextName>
+    <property name="LOG_PATH" value="logs"/>
+    <property name="LOG_PATTERN" value="[%d] %highlight([%-5p]) %green([traceId:%X{traceId}]) %green([userId:%X{userId}]) %yellow([%t]) %cyan([%logger{20}]:%L) >>> %highlight(%msg %n)"/>
+    <property name="MAX_HISTORY" value="365"/>
+    <property name="TOTAL_SIZE_CAP" value="100GB"/>
+    <property name="MY_PATTERN" value="%cyan([%logger{20}]:%L)：%n%highlight(%msg %n%n)"/>
+
+    <springProperty scope="context" name="LOGGING_FILE_NAME" source="logging.file.name"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_SERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGGING_FILE_NAME}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/server/server-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/error/error-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="ASYNC_FILE_SERVER" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 日志队列大小 -->
+        <queueSize>1024</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="FILE_SERVER"/>
+    </appender>
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="ASYNC_FILE_SERVER"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- 不同包，设置不同的日志级别 -->
+<!--    <logger name="com.evergrande.framework.boot" level="debug"/>-->
+
+</configuration>
