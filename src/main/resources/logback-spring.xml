@@ -2,10 +2,10 @@
 <configuration>
     <contextName>basic</contextName>
     <property name="LOG_PATH" value="logs"/>
-    <property name="LOG_PATTERN" value="[%d] %highlight([%-5p]) %green([traceId:%X{traceId}]) %green([userId:%X{userId}]) %yellow([%t]) %cyan([%logger{20}]:%L) >>> %highlight(%msg %n)"/>
+    <property name="LOG_PATTERN" value="%cyan([%logger{20}]:%L)：%n%highlight(%msg %n%n)"/>
+    <property name="LOG_PATTERN1" value="[%d] %highlight([%-5p]) %green([traceId:%X{traceId}]) %green([userId:%X{userId}]) %yellow([%t]) %cyan([%logger{20}]:%L) >>> %highlight(%msg %n)"/>
     <property name="MAX_HISTORY" value="365"/>
     <property name="TOTAL_SIZE_CAP" value="100GB"/>
-    <property name="MY_PATTERN" value="%cyan([%logger{20}]:%L)：%n%highlight(%msg %n%n)"/>
 
     <springProperty scope="context" name="LOGGING_FILE_NAME" source="logging.file.name"/>
 
