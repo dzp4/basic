@@ -21,6 +21,7 @@ public class OrderIdUtil {
         TimeInterval timer = DateUtil.timer();
         String orderId = getOrderId(OrderEnum.BID);
         System.out.println(orderId);
+        // 花费毫秒数
         System.out.println(timer.interval());
     }
 
