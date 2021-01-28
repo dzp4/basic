@@ -26,7 +26,7 @@ public class OrderIdUtil {
     }
 
     /**
-     * 获取一个随机的订单ID
+     * 获取一个随机的订单ID，此方法包括init大概4秒，init应该放到定时器里面，并且此方法在多线程下，应该不行
      *
      * @param orderEnum 订单枚举
      * @return 订单ID
@@ -48,8 +48,8 @@ public class OrderIdUtil {
      */
     public static HashMap<String, List<String>> initIdList() {
         OrderEnum[] values = OrderEnum.values();
-        HashMap<String, List<String>> orderIdMap = Maps.newHashMapWithExpectedSize(values.length);
         String date = DateUtil.format(DateUtil.date(), "yyyyMMdd");
+        HashMap<String, List<String>> orderIdMap = Maps.newHashMapWithExpectedSize(values.length);
         for (OrderEnum value : values) {
             String name = value.name();
             List<String> allNumber = getAllNumber(value.prefix, date, value.suffixLen);
